@@ -1,14 +1,18 @@
-import Nav from "@components/Nav";
-import Provider from "@components/Provider";
-import "@styles/globals.css";
-import React from "react";
+import Nav from "@/components/Nav";
+import Provider from "@/components/Provider";
+import "@/styles/globals.css";
+import React, { FC } from "react";
 
 export const metadata = {
     title: "Promptopia",
     description: "Discover & Share AI Prompts",
 };
 
-const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+type Props = {
+    children: React.ReactNode;
+};
+
+const RootLayout: FC<Props> = ({ children }) => {
     return (
         <html lang="en">
             <body>
