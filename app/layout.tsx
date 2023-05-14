@@ -16,7 +16,7 @@ const RootLayout: FC<Props> = ({ children }) => {
     return (
         <html lang="en">
             <body>
-                <Provider session={null}>
+                <Provider>
                     <div className="main">
                         <div className="gradient"></div>
                     </div>

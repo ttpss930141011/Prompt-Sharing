@@ -18,12 +18,13 @@ const Nav = () => {
         LiteralUnion<BuiltInProviderType, string>,
         ClientSafeProvider
     > | null>(null);
-
+    // console.log('session', session);
     const [toggleDropdown, setToggleDropdown] = useState(false);
 
     useEffect(() => {
         (async () => {
             const res = await getProviders();
+            console.log("res", res);
             setProviders(res);
         })();
     }, []);
@@ -40,7 +41,6 @@ const Nav = () => {
                 ></Image>
                 <p className="logo_text">Promptopia</p>
             </Link>
-            {/* {alert(session?.user)} */}
             {/* Desktop Naviation */}
             <div className="sm:flex hidden">
                 {session?.user ? (
@@ -53,7 +53,7 @@ const Nav = () => {
                         </button>
                         <Link href={"/profile"}>
                             <Image
-                                src={"/assets/images/logo.svg"}
+                                src={session?.user?.image ?? ''}
                                 width={37}
                                 height={37}
                                 className="rounded-full"
@@ -70,7 +70,10 @@ const Nav = () => {
                                     key={provider.name}
                                     onClick={() => signIn(provider.id)}
                                     className="black_btn"
-                                > Sign in</button>
+                                >
+                                    {" "}
+                                    Sign in
+                                </button>
                             ))}
                     </>
                 )}
@@ -81,7 +84,7 @@ const Nav = () => {
                 {session?.user ? (
                     <div className="flex">
                         <Image
-                            src={"/assets/images/logo.svg"}
+                            src={session?.user?.image ?? ''}
                             width={37}
                             height={37}
                             className="rounded-full"
@@ -111,7 +114,9 @@ const Nav = () => {
                                         setToggleDropdown(false);
                                         signOut();
                                     }}
-                                >Sign Out</button>
+                                >
+                                    Sign Out
+                                </button>
                             </div>
                         )}
                     </div>
@@ -124,7 +129,9 @@ const Nav = () => {
                                     key={provider.name}
                                     onClick={() => signIn(provider.id)}
                                     className="black_btn"
-                                >Sign in</button>
+                                >
+                                    Sign in
+                                </button>
                             ))}
                     </>
                 )}

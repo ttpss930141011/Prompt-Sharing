@@ -7,7 +7,7 @@ export default interface User {
     email: string;
     username?: string;
     status?: boolean;
-    image?: string;
+    picture?: string;
 }
 
 const UserSchema = new Schema<User>(
@@ -21,7 +21,7 @@ const UserSchema = new Schema<User>(
             type: Schema.Types.String,
             required: [true, "Username is required"],
         },
-        image: {
+        picture: {
             type: Schema.Types.String,
         },
         status: {

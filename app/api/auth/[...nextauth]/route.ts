@@ -3,9 +3,9 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@/utils/database";
 import UserRepo from "@/utils/database/repository/UserRepo";
-// import User from "@/utils/database/models/users";
+import User from "@/utils/database/models/users";
 import { Types } from "mongoose";
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions,Profile } from "next-auth";
 
 const authOptions: NextAuthOptions = {
     providers: [
@@ -17,10 +17,11 @@ const authOptions: NextAuthOptions = {
     callbacks: {
         async session({ session }) {
             const { user } = session;
-            if (!user) return session;
+            if (!user) throw new Error("User not found");;
             const { email } = user;
             if (!email) throw new Error("Email not found");
             const sessionUser = await UserRepo.findByEmail(email);
+            if (!sessionUser) throw new Error("SessionUser not found");
             if (sessionUser) session.user.id = sessionUser._id.toString();
             return session;
         },
@@ -28,14 +29,14 @@ const authOptions: NextAuthOptions = {
             try {
                 await connectToDB();
                 if (!profile) throw new Error("No profile found");
-                const { email, name, image } = profile;
-                if (!email || !name || !image) throw new Error("Parial profile not found");
+                const { email, name, picture } = profile;
+                if (!email || !name || !picture) throw new Error("Parial profile not found");
                 const userExists = await UserRepo.findByEmail(email);
                 if (!userExists) {
-                    const newUser = {
+                    const newUser:User = {
                         _id: new Types.ObjectId(),
                         email,
-                        image,
+                        picture,
                         username: name.replace(/\s+/g, ""),
                     };
                     await UserRepo.create(newUser);

@@ -20,16 +20,6 @@ export const connectToDB = async () => {
         // socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     };
 
-    mongoose
-        .connect(dbURI, options)
-        .then(() => {
-            console.info("Mongoose connection done");
-            isConnected = true;
-        })
-        .catch((e) => {
-            console.info("Mongoose connection error");
-            console.error(e);
-        });
     mongoose.connection.once("connected", () => {
         console.info("Mongoose default connection open to " + dbURI);
     });
@@ -52,4 +42,13 @@ export const connectToDB = async () => {
         console.info("Mongoose default connection disconnected through app termination");
         process.exit(0);
     });
+
+    try {
+        await mongoose.connect(dbURI, options);
+        console.info("Mongoose connection done");
+        isConnected = true;
+    } catch (err) {
+        console.info("Mongoose connection error");
+        console.error(err);
+    }
 };
