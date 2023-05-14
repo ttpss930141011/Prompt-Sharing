@@ -13,7 +13,7 @@ import {
 import { BuiltInProviderType } from "next-auth/providers";
 
 const Nav = () => {
-    const isUserLoggedIn = true;
+    const { data: session } = useSession();
     const [providers, setProviders] = useState<Record<
         LiteralUnion<BuiltInProviderType, string>,
         ClientSafeProvider
@@ -40,9 +40,10 @@ const Nav = () => {
                 ></Image>
                 <p className="logo_text">Promptopia</p>
             </Link>
+            {/* {alert(session?.user)} */}
             {/* Desktop Naviation */}
             <div className="sm:flex hidden">
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className="flex gap-3 md:gap-5">
                         <Link href={"/create-prompt"} className="black_btn">
                             Create Prompt
@@ -69,7 +70,7 @@ const Nav = () => {
                                     key={provider.name}
                                     onClick={() => signIn(provider.id)}
                                     className="black_btn"
-                                ></button>
+                                > Sign in</button>
                             ))}
                     </>
                 )}
@@ -77,7 +78,7 @@ const Nav = () => {
 
             {/* Mobile navigation */}
             <div className="sm:hidden flex relative">
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className="flex">
                         <Image
                             src={"/assets/images/logo.svg"}
@@ -123,7 +124,7 @@ const Nav = () => {
                                     key={provider.name}
                                     onClick={() => signIn(provider.id)}
                                     className="black_btn"
-                                ></button>
+                                >Sign in</button>
                             ))}
                     </>
                 )}

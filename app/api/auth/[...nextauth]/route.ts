@@ -3,7 +3,7 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@/utils/database";
 import UserRepo from "@/utils/database/repository/UserRepo";
-import User from "@/utils/database/models/users";
+// import User from "@/utils/database/models/users";
 import { Types } from "mongoose";
 import { NextAuthOptions } from "next-auth";
 
@@ -32,7 +32,7 @@ const authOptions: NextAuthOptions = {
                 if (!email || !name || !image) throw new Error("Parial profile not found");
                 const userExists = await UserRepo.findByEmail(email);
                 if (!userExists) {
-                    const newUser: User = {
+                    const newUser = {
                         _id: new Types.ObjectId(),
                         email,
                         image,

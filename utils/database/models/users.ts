@@ -35,4 +35,4 @@ const UserSchema = new Schema<User>(
     }
 );
 export const UsersModel: Model<User> =
-    models.UsersModel || model(DOCUMENT_NAME, UserSchema, COLLECTION_NAME);
+    models[DOCUMENT_NAME] || model(DOCUMENT_NAME, UserSchema, COLLECTION_NAME);
