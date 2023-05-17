@@ -1,9 +1,11 @@
 import { Model, model, models, Schema, Types } from "mongoose";
+import User from "./users";
 const DOCUMENT_NAME = "Prompt";
 const COLLECTION_NAME = "prompts";
 
 export default interface Prompt {
-    creator: Types.ObjectId;
+    _id: Types.ObjectId;
+    creator: User | Types.ObjectId;
     prompt: string;
     tag: string;
     status?: boolean;
