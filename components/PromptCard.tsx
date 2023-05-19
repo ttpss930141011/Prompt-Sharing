@@ -10,12 +10,14 @@ import User from "@/utils/database/models/users";
 
 type PromptProps = {
     post: Prompt;
-    handleEdit: Function;
-    handleDelete: Function;
-    handleTagClick: Function;
+    handleEdit?: () => void;
+    handleDelete?: () => void;
+    handleTagClick?: (tagName: string) => void;
 };
 
 const PromptCard: FC<PromptProps> = ({ post, handleEdit, handleDelete, handleTagClick }) => {
+    const { data: session } = useSession();
+    const pathName = usePathname();
     const [copied, setCopied] = useState("");
     const handleCopy = () => {
         setCopied(post.prompt);
@@ -64,6 +66,22 @@ const PromptCard: FC<PromptProps> = ({ post, handleEdit, handleDelete, handleTag
             >
                 {post.tag}
             </p>
+            {session?.user.id === post.creator._id.toString() && pathName === "/profile" && (
+                <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+                    <p
+                        className="font-inter text-sm green_gradient cursor-pointer"
+                        onClick={handleEdit}
+                    >
+                        Edit
+                    </p>
+                    <p
+                        className="font-inter text-sm orange_gradient cursor-pointer"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </p>
+                </div>
+            )}
         </div>
     );
 };

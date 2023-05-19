@@ -1,9 +1,39 @@
-import React from 'react'
+"use client";
 
-const Profile = () => {
-  return (
-    <div>Profile</div>
-  )
-}
+import { useSession } from "next-auth/react";
+import { useEffect, useState, FC } from "react";
+import { useRouter } from "next/navigation";
+import Prompt from "@/utils/database/models/prompt";
+import PromptCard from "./PromptCard";
 
-export default Profile
+type ProfileProps = {
+    name: string;
+    desc: string;
+    data: Prompt[];
+    handleEdit: Function;
+    handleDelete: Function;
+};
+const Profile: FC<ProfileProps> = ({ name, desc, data, handleEdit, handleDelete }) => {
+    console.log("Profile", data);
+    return (
+        <section className="w-full">
+            <h1 className="head_text text-left">
+                <span className="blue_gradient">{name} Profile</span>
+            </h1>
+            <p className="desc text-left">{desc}</p>
+
+            <div className="mt-10 prompt_layout">
+                {data.map((post, index) => (
+                    <PromptCard
+                        key={index}
+                        post={post}
+                        handleEdit={() => handleEdit && handleEdit(post)}
+                        handleDelete={() => handleDelete && handleDelete(post)}
+                    />
+                ))}
+            </div>
+        </section>
+    );
+};
+
+export default Profile;
