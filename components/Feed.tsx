@@ -5,13 +5,13 @@ import Prompt from "@/utils/database/models/prompt";
 
 type PromptCardListProps = {
     data: Prompt[];
-    handleTagClick: Prompt[];
+    handleTagClick: (tagName: string) => void;
 };
 const PromptCardList: FC<PromptCardListProps> = ({ data, handleTagClick }) => {
     return (
         <div className="mt-16 prompt_layout">
-            {data.map((post) => (
-                <PromptCard key={post._id} post={post} handleTagClick={handleTagClick} />
+            {data.map((post, index) => (
+                <PromptCard key={index} post={post} handleTagClick={handleTagClick} />
             ))}
         </div>
     );
@@ -20,6 +20,13 @@ const Feed = () => {
     const [searchText, setDesearchText] = useState("");
     const [posts, setPosts] = useState([]);
     const handleSearchChange = () => {};
+    const handleTagClick = (tagName: string) => {
+        console.log(tagName);
+        // setSearchText(tagName);
+
+        // const searchResult = filterPrompts(tagName);
+        // setSearchedResults(searchResult);
+    };
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await fetch("/api/prompt");
@@ -42,7 +49,7 @@ const Feed = () => {
                 />
             </form>
 
-            <PromptCardList data={posts} handleTagClick={() => {}} />
+            <PromptCardList data={posts} handleTagClick={handleTagClick} />
         </section>
     );
 };

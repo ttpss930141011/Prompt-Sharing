@@ -10,23 +10,33 @@ const MyProfile = () => {
     const { data: session } = useSession();
     const [myPosts, setMyPosts] = useState<Prompt[]>([]);
 
-    const handleEdit = (id: string) => {
-        router.push(`/prompt/${id}`);
+    const handleEdit = (post: Prompt) => {
+        const { _id } = post;
+        if (!_id) console.error("Invalid post ID");
+        router.push(`/update-prompt?id=${_id}`);
     };
 
-    const handleDelete = (id: string) => {
-        console.log(id);
+    const handleDelete = async (post: Prompt) => {
+        const hasConfirmed = confirm("Are you sure you want to delete this post?");
+        if (!hasConfirmed) return;
+        const { _id } = post;
+        if (!_id) console.error("Invalid post ID");
+        const response = await fetch(`/api/prompt/${_id}`, {
+            method: "DELETE",
+        });
+        const filteredPost = myPosts.filter((p) => p._id !== _id);
+        setMyPosts(filteredPost);
     };
 
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await fetch(`/api/users/${session?.user.id}/posts`);
             const data = (await response.json()) as Prompt[];
-            console.log(data);
+            console.log("fetchPosts", data);
             setMyPosts(data);
         };
         fetchPosts();
-    }, [session?.user.id]);
+    }, []);
     return (
         <Profile
             name="My"
